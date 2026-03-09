@@ -1,5 +1,5 @@
 {
-    "name": "arcanedev/support",
+    "name": "squipix/support",
     "description": "ARCANEDEV Support Helpers",
     "keywords": [
         "arcanedev",
@@ -7,7 +7,7 @@
         "support",
         "laravel"
     ],
-    "homepage": "https://github.com/ARCANEDEV/Support",
+    "homepage": "https://github.com/squipix/support",
     "authors": [
         {
             "name": "ARCANEDEV",
