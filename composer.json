@@ -1,0 +1,58 @@
+{
+    "name": "arcanedev/support",
+    "description": "ARCANEDEV Support Helpers",
+    "keywords": [
+        "arcanedev",
+        "arcanesoft",
+        "support",
+        "laravel"
+    ],
+    "homepage": "https://github.com/ARCANEDEV/Support",
+    "authors": [
+        {
+            "name": "ARCANEDEV",
+            "email": "arcanedev.maroc@gmail.com",
+            "homepage": "https://github.com/arcanedev-maroc"
+        }
+    ],
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "illuminate/contracts": "^12.0",
+        "illuminate/support": "^12.0"
+    },
+    "require-dev": {
+        "laravel/framework": "^12.0",
+        "orchestra/testbench-core": "^10.0",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Squipix\\Support\\": "src/"
+        },
+        "files": [
+            "helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Squipix\\Support\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --colors=always",
+        "test:dox": "phpunit --testdox --colors=always",
+        "test:cov": "phpunit --coverage-html coverage"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "12.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

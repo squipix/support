@@ -1,0 +1,20 @@
+{
+    "name": "arcanedev/package",
+    "description": "",
+    "authors": [
+        {
+            "name": "SQUIPIX",
+            "email": "info@squipix.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Arcanedev\\Package\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Arcanedev\\Package\\Tests\\": "tests/"
+        }
+    }
+}
