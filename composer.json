@@ -1,14 +1,19 @@
 {
     "name": "squipix/support",
-    "description": "ARCANEDEV Support Helpers",
+    "description": "Squipix Support Helpers",
     "keywords": [
-        "arcanedev",
-        "arcanesoft",
+        "squipix",
         "support",
         "laravel"
     ],
     "homepage": "https://github.com/squipix/support",
     "authors": [
+        {
+            "name": "Squipix",
+            "email": "info@squipix.com",
+            "homepage": "https://github.com/squipix",
+            "role": "Developer"
+        },
         {
             "name": "ARCANEDEV",
             "email": "arcanedev.maroc@gmail.com",
