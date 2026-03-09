@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Squipix\Support;
 
+use InvalidArgumentException;
+
 /**
  * Class     Stub
  *
@@ -210,7 +212,7 @@ class Stub
      */
     public function saveTo(string $path, string $filename): bool
     {
-        return file_put_contents($path.DIRECTORY_SEPARATOR.$filename, $this->render()) !== false;
+        return file_put_contents($this->resolveWriteTargetPath($path, $filename), $this->render()) !== false;
     }
 
     /**
@@ -220,13 +222,86 @@ class Stub
      */
     public function getContents()
     {
-        $contents = file_get_contents($this->getPath());
+        $path = $this->getPath();
+
+        $this->ensureReadablePath($path);
+
+        $contents = file_get_contents($path);
+
+        if ($contents === false) {
+            throw new InvalidArgumentException("Unable to read the stub file [{$path}].");
+        }
 
         foreach ($this->getReplaces() as $search => $replace) {
             $contents = str_replace('$'.strtoupper($search).'$', $replace, $contents);
         }
 
         return $contents;
+    }
+
+    /**
+     * Ensure the stub path is readable and scoped to base path (if configured).
+     *
+     * @param  string  $path
+     */
+    protected function ensureReadablePath(string $path): void
+    {
+        if (empty(static::$basePath)) {
+            return;
+        }
+
+        $basePath = realpath(static::$basePath);
+        $stubPath = realpath($path);
+
+        if ($basePath === false || $stubPath === false || ! $this->isWithinBasePath($stubPath, $basePath)) {
+            throw new InvalidArgumentException('The stub path must be within the configured base path.');
+        }
+    }
+
+    /**
+     * Resolve and validate the write target path.
+     *
+     * @param  string  $path
+     * @param  string  $filename
+     *
+     * @return string
+     */
+    protected function resolveWriteTargetPath(string $path, string $filename): string
+    {
+        if ($filename === '' || basename($filename) !== $filename || strpos($filename, '..') !== false) {
+            throw new InvalidArgumentException('The stub filename is invalid.');
+        }
+
+        $directory = realpath($path);
+
+        if ($directory === false || ! is_dir($directory) || ! is_writable($directory)) {
+            throw new InvalidArgumentException('The destination path is not writable.');
+        }
+
+        if (! empty(static::$basePath)) {
+            $basePath = realpath(static::$basePath);
+
+            if ($basePath === false || ! $this->isWithinBasePath($directory, $basePath)) {
+                throw new InvalidArgumentException('The destination path must be within the configured base path.');
+            }
+        }
+
+        return $directory . DIRECTORY_SEPARATOR . $filename;
+    }
+
+    /**
+     * Check if a path is within the configured base path.
+     *
+     * @param  string  $path
+     * @param  string  $basePath
+     *
+     * @return bool
+     */
+    private function isWithinBasePath(string $path, string $basePath): bool
+    {
+        $basePath = rtrim($basePath, DIRECTORY_SEPARATOR);
+
+        return $path === $basePath || str_starts_with($path, $basePath . DIRECTORY_SEPARATOR);
     }
 
     /**

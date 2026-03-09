@@ -6,6 +6,7 @@ namespace Squipix\Support\Tests;
 
 use Squipix\Support\Stub;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 /**
  * Class     StubTest
@@ -110,5 +111,29 @@ class StubTest extends TestCase
         static::assertEmpty($this->stub->getBasePath());
         static::assertEquals($path, $this->stub->getPath());
         static::assertEmpty($this->stub->getReplaces());
+    }
+
+    /** @test */
+    public function it_rejects_reading_outside_base_path(): void
+    {
+        Stub::setBasePath($this->getFixturesPath('stubs'));
+
+        $this->stub = Stub::create('../config/package.php');
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->stub->render();
+    }
+
+    /** @test */
+    public function it_rejects_unsafe_write_filenames(): void
+    {
+        Stub::setBasePath($basePath = $this->getFixturesPath('stubs'));
+
+        $this->stub = Stub::create('composer.stub');
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->stub->saveTo($basePath, '../composer.json');
     }
 }
