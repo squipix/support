@@ -10,8 +10,7 @@ if ( ! function_exists('laravel_version')) {
      *
      * @return string|bool
      */
-    function laravel_version(?string $version = null)
-    {
+    function laravel_version(string $version = null) {
         $appVersion = app()->version();
 
         if (is_null($version)) {

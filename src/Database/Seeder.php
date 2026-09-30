@@ -38,12 +38,10 @@ abstract class Seeder extends IlluminateSeeder
     {
         Eloquent::unguard();
 
-        try {
-            foreach ($this->seeds as $seed) {
-                $this->call($seed);
-            }
-        } finally {
-            Eloquent::reguard();
+        foreach ($this->seeds as $seed) {
+            $this->call($seed);
         }
+
+        Eloquent::reguard();
     }
 }
